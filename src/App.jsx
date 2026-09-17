@@ -108,47 +108,6 @@ function TilePill({ label }) {
   )
 }
 
-function NotifyForm() {
-  const roles = ['Customer', 'Dealer', 'Distributor', 'Contractor']
-  const ref = useRef(null)
-  useEffect(() => {
-    gsap.from(ref.current, { opacity: 0, y: 28, duration: 0.7, ease: 'power2.out', scrollTrigger: { trigger: ref.current, start: 'top 88%' } })
-  }, [])
-  function handleSubmit(e) {
-    e.preventDefault()
-    gsap.fromTo(ref.current, { scale: 0.98 }, { scale: 1, duration: 0.3, ease: 'back.out(3)' })
-    alert('Thank you! We will notify you at launch.')
-    e.target.reset()
-  }
-  return (
-    <form ref={ref} onSubmit={handleSubmit} className="bg-gray-50 border border-gray-200 rounded-3xl p-6 sm:p-8 space-y-4">
-      {[['name','Your Name','text'],['email','Email Address','email'],['mobile','Mobile Number','tel']].map(([n,p,t]) => (
-        <input key={n} name={n} type={t} placeholder={p} required
-          className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 text-sm focus:outline-none transition-colors duration-200"
-          onFocus={e => e.target.style.borderColor = G} onBlur={e => e.target.style.borderColor = ''} />
-      ))}
-      <div>
-        <p className="text-gray-400 text-xs uppercase tracking-wider mb-3">I am interested as:</p>
-        <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:gap-4">
-          {roles.map(r => (
-            <label key={r} className="flex items-center gap-2 cursor-pointer text-sm text-gray-600">
-              <input type="radio" name="role" value={r} defaultChecked={r === 'Customer'} className="accent-[#01793A]" />
-              {r}
-            </label>
-          ))}
-        </div>
-      </div>
-      <button type="submit"
-        className="w-full font-black py-3.5 rounded-xl text-white text-sm tracking-widest uppercase transition-colors duration-200"
-        style={{ backgroundColor: G }}
-        onMouseEnter={e => e.currentTarget.style.backgroundColor = '#015c2c'}
-        onMouseLeave={e => e.currentTarget.style.backgroundColor = G}>
-        Notify Me
-      </button>
-    </form>
-  )
-}
-
 export default function App() {
   const heroRef = useRef(null)
   const imgRef = useRef(null)
@@ -196,15 +155,14 @@ export default function App() {
               Premium tile adhesive engineered for reliable bonding, smooth application, and long-lasting durability.
             </p>
             <div className="hero-line flex flex-wrap justify-center lg:justify-start gap-3 pt-1">
-              <Btn href="#notify">Notify Me</Btn>
-              <Btn href="#contact" outline>Contact Us</Btn>
+              <Btn href="#contact">Notify Me</Btn>
             </div>
           </div>
 
           {/* image */}
           <div ref={imgRef} className="flex-1 flex justify-center">
-            <img src="JIPL.png" alt="Mighty Fix Premium Tile Adhesive"
-              className="w-48 sm:w-64 lg:w-80 xl:w-96 object-contain"
+            <img src="Bag.jpeg" alt="Mighty Fix Premium Tile Adhesive"
+              className="w-48 sm:w-64 lg:w-80 xl:w-96 object-contain rounded-3xl shadow-2xl"
               style={{ filter: 'drop-shadow(0 20px 40px rgba(1,121,58,0.18))' }} />
           </div>
         </div>
@@ -284,19 +242,9 @@ export default function App() {
             Stay connected and be the first to know when we launch.
           </p>
           <div className="flex flex-wrap justify-center gap-3 pt-1">
-            <Btn href="#notify">Notify Me</Btn>
+            <Btn href="#contact">Notify Me</Btn>
           </div>
         </div>
-      </section>
-
-      {/* NOTIFY FORM */}
-      <section id="notify" className="py-16 sm:py-20 px-4 sm:px-6 lg:px-16 max-w-lg mx-auto">
-        <div className="reveal text-center mb-8">
-          <p className="text-xs font-bold tracking-[0.2em] uppercase mb-3" style={{ color: G }}>Stay Updated</p>
-          <h2 className="text-2xl sm:text-3xl font-black mb-2">Be the First to Know</h2>
-          <p className="text-gray-500 text-sm">Get notified when Mighty Fix officially launches.</p>
-        </div>
-        <NotifyForm />
       </section>
 
       {/* DEALER CTA */}
@@ -323,13 +271,15 @@ export default function App() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5 text-center">
           {[
             { icon: '🏢', label: 'Manufacturer', value: 'J. Infra Projects Pvt. Ltd., India' },
-            { icon: '📧', label: 'Email', value: 'jipl11961196@gmail.com' },
-            { icon: '📞', label: 'Phone', value: '+91 9821837212' },
+            { icon: '📧', label: 'Email', value: 'jipl11961196@gmail.com', href: 'mailto:jipl11961196@gmail.com' },
+            { icon: '📞', label: 'Phone', value: '+91 9821837212', href: 'tel:+919821837212' },
           ].map(c => (
             <Card key={c.label} className="reveal p-6 sm:p-8">
               <div className="text-3xl sm:text-4xl mb-3">{c.icon}</div>
               <div className="text-xs text-gray-400 uppercase tracking-widest mb-2">{c.label}</div>
-              <div className="font-semibold text-gray-800 text-sm">{c.value}</div>
+              {c.href
+                ? <a href={c.href} className="font-semibold text-sm transition-colors duration-200" style={{ color: G }}>{c.value}</a>
+                : <div className="font-semibold text-gray-800 text-sm">{c.value}</div>}
             </Card>
           ))}
         </div>
